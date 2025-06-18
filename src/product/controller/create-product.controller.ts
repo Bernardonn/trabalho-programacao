@@ -1,13 +1,13 @@
 import { Body, Controller, HttpCode, Post } from "@nestjs/common";
-import { ZodValidationPipe } from "./pipes/zod-validation-pipe";
+import { ZodValidationPipe } from "../../pipes/zod-validation-pipe";
 import { z } from "zod";
-import { CreateProductService } from "./create-product.service";
+import { CreateProductService } from "../service/create-product.service";
 import { Category } from "@prisma/client";
 
 const createProductBodySchema = z.object({
   name: z.string(),
   description: z.string().optional(),
-  price: z.number(),
+  price: z.number(),  
   inStock: z.number(),
   isAvailable: z.boolean(),
   category: z.enum([Category.ELECTRONICS, Category.OTHER]),

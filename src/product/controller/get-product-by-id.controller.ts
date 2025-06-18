@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { GetProductByIdService } from "./get-product-by-id.service";
+import { GetProductByIdService } from "../service/get-product-by-id.service";
 
 @Controller('/products/:id')
 export class GetProductByIdController {

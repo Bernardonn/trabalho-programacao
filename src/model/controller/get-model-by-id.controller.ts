@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { GetModelByIdService } from "./get-model-by-id.service";
+import { GetModelByIdService } from "../service/get-model-by-id.service";
 
 @Controller('/models/:id')
 export class GetModelByIdController {

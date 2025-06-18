@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Param, Put } from "@nestjs/common";
 import { z } from "zod";
-import { ZodValidationPipe } from "./pipes/zod-validation-pipe";
-import { EditModelService } from "./edit-model.service";
+import { ZodValidationPipe } from "../../pipes/zod-validation-pipe";
+import { EditModelService } from "../service/edit-model.service";
 
 const editModelBodySchema = z.object({
   name: z.string(),

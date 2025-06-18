@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpCode, Param } from "@nestjs/common";
-import { DeleteModelService } from "./delete-model.service";
+import { DeleteModelService } from "../service/delete-model.service";
 
 @Controller('/models/:id')
 export class DeleteModelController {

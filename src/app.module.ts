@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { CreateProductController } from './products/controller/create-product.controller';
 import { PrismaService } from './prisma.service';
 import { CreateProductService } from './products/service/create-product.service';
-import { ProductsRepository } from './products.repository';
+import { ProductsRepository } from './products/repository/products.repository';
 import { CreateModelController } from './models/controller/create-model.controller';
 import { DeleteModelController } from './models/controller/delete-model.controller';  
 import { DeleteProductController } from './products/controller/delete-product.controller';
 import { EditModelController } from './models/controller/edit-model.controller';
-import { EditProductController } from './products/controller/edit-product.controller';
+import { EditProductController } from './products/controller/edit-product-by-id.controller';
 import { FetchRecentModelsController } from './models/controller/fetch-recent-models.controller';
 import { FetchRecentProductsController } from './products/controller/fetch-recent-products.controller';
 import { GetProductByIdController } from './products/controller/get-product-by-id.controller';
@@ -23,7 +23,7 @@ import { FetchRecentProductsService } from './products/service/fetch-recent-prod
 import { GetProductByIdService } from './products/service/get-product-by-id.service';
 import { GetModelByIdService } from './models/service/get-model-by-id.service';
 import { UpdateAvailableProductService } from './update-available-product.service';
-import { ModelsRepository } from './models.repository';
+import { ModelsRepository } from './models/repository/models.repository';
 
 @Module({
   imports: [],

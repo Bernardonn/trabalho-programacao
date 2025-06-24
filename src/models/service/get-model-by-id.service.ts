@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { ModelsRepository } from "../../models.repository";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ModelsRepository } from "../repository/models.repository";
 
 export interface Model {
   id: string;
   name: string;
-  createdAt: string | Date | undefined;
-  updatedAt: string | Date | null | undefined;
+  createdAt: Date;
+  updatedAt: Date | null;
 }
 
 interface GetModelByIdServiceRequest {
@@ -26,18 +26,18 @@ export class GetModelByIdService {
     const model = await this.modelsRepository.findById(id);
 
     if (!model) {
-      throw new Error("Model not found");
+      throw new NotFoundException("Model não encontrado");
     }
 
     const newModel: Model = {
-      id: model.id?.toString() || "",
+      id: model.id,
       name: model.name,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     };
 
     return {
-      model: newModel
+      model: newModel,
     };
   }
 }

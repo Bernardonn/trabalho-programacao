@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ProductsRepository } from "./products.repository";
+import { ProductsRepository } from "./products/repository/products.repository";
 
 interface UpdateAvailableProductServiceRequest {
   isAvailable: boolean;

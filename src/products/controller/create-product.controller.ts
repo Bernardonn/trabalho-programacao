@@ -4,27 +4,30 @@ import { z } from "zod";
 import { CreateProductService } from "../service/create-product.service";
 import { Category } from "@prisma/client";
 
+const categories = Object.values(Category) as [string, ...string[]];
+
 const createProductBodySchema = z.object({
   name: z.string(),
   description: z.string().optional(),
-  price: z.number(),  
+  price: z.number(),
   inStock: z.number(),
   isAvailable: z.boolean(),
-  category: z.enum([Category.ELECTRONICS, Category.OTHER]),
+  category: z.enum(categories),
   tags: z.array(z.string()),
+  modelId: z.string().uuid().optional(),
 });
 
 const bodyValidationPipe = new ZodValidationPipe(createProductBodySchema);
 
-type CreateProductBodySchema = z.infer<typeof createProductBodySchema>;
+type CreateProductBody = z.infer<typeof createProductBodySchema>;
 
 @Controller('/products')
 export class CreateProductController {
-  constructor(private createProduct: CreateProductService) {}
+  constructor(private readonly createProductService: CreateProductService) {}
 
   @Post()
   @HttpCode(201)
-  async handle(@Body(bodyValidationPipe) body: CreateProductBodySchema) {
+  async handle(@Body(bodyValidationPipe) body: CreateProductBody) {
     const {
       name,
       description,
@@ -33,9 +36,10 @@ export class CreateProductController {
       isAvailable,
       category,
       tags,
+      modelId,
     } = body;
 
-    await this.createProduct.execute({
+    await this.createProductService.execute({
       name,
       description,
       price,
@@ -43,6 +47,9 @@ export class CreateProductController {
       isAvailable,
       category,
       tags,
+      modelId,
     });
+
+    return { message: 'Product created successfully.' };
   }
 }

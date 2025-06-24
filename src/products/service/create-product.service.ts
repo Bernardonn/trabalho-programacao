@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { ProductsRepository } from "../../products.repository";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { ProductsRepository } from "../repository/products.repository";
 import { Category } from "@prisma/client";
 
 interface CreateProductServiceRequest {
@@ -10,6 +10,7 @@ interface CreateProductServiceRequest {
   isAvailable: boolean;
   category: Category;
   tags: string[];
+  modelId?: string;
 }
 
 @Injectable()
@@ -24,11 +25,12 @@ export class CreateProductService {
     isAvailable,
     category,
     tags,
+    modelId,
   }: CreateProductServiceRequest): Promise<void> {
     const productWithSameName = await this.productsRepository.findByName(name);
 
     if (productWithSameName) {
-      throw new Error("Product already exists");
+      throw new BadRequestException("Product with same name already exists.");
     }
 
     const product = {
@@ -39,6 +41,7 @@ export class CreateProductService {
       isAvailable,
       category,
       tags,
+      modelId,
     };
 
     await this.productsRepository.create(product);

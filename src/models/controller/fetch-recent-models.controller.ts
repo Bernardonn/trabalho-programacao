@@ -1,5 +1,5 @@
-import { Controller, Get } from "@nestjs/common";
-import { FetchRecentModelsService } from "../service/fetch-recent-models.service";
+import { Controller, Get } from '@nestjs/common';
+import { FetchRecentModelsService } from '../service/fetch-recent-models.service';
 
 @Controller('/models')
 export class FetchRecentModelsController {
@@ -10,7 +10,7 @@ export class FetchRecentModelsController {
     const models = await this.fetchRecentModels.execute();
 
     return {
-      models
+      models,
     };
   }
 }

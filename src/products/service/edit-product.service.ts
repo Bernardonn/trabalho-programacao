@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ProductsRepository } from "../../products.repository";
+import { ProductsRepository } from "../repository/products.repository";
 import { Category } from "@prisma/client";
 
 interface EditProductServiceRequest {
@@ -30,7 +30,7 @@ export class EditProductService {
     const product = await this.productsRepository.findById(id);
 
     if (!product) {
-      throw new Error("Product not found");
+      throw new Error("Produto não encontrado");
     }
 
     product.name = name;

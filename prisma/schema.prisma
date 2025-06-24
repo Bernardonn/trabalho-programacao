@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -15,8 +11,6 @@ datasource db {
 
 enum Category {
   ELECTRONICS
-  FASHION
-  HOME
   OTHER
 }
 
@@ -30,8 +24,10 @@ model Product {
   category    Category
   tags        String[]
 
-  orderItems  OrderItem[] // One-to-Many
-  models      Model[]   @relation("product_models")
+  modelId     String?  @map("model_id")
+  model       Model?   @relation(fields: [modelId], references: [id], name: "product_models")
+
+  orderItems  OrderItem[]
 
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
@@ -40,13 +36,13 @@ model Product {
 }
 
 model Model {
-  id   String @id @default(uuid())
-  name String
+  id        String    @id @default(uuid())
+  name      String
 
-  products Product[] @relation("product_models")
+  products  Product[] @relation("product_models")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("models")
 }
@@ -96,7 +92,7 @@ model OrderItem {
   productId String
   quantity  Float   
 
-  order Order @relation(fields: [orderId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
   product Product @relation(fields: [productId], references: [id])
 
   createdAt DateTime  @default(now()) @map("created_at")

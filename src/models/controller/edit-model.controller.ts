@@ -1,7 +1,7 @@
-import { Body, Controller, HttpCode, Param, Put } from "@nestjs/common";
-import { z } from "zod";
-import { ZodValidationPipe } from "../../pipes/zod-validation-pipe";
-import { EditModelService } from "../service/edit-model.service";
+import { Body, Controller, HttpCode, Param, Put } from '@nestjs/common';
+import { z } from 'zod';
+import { ZodValidationPipe } from '../../pipes/zod-validation-pipe';
+import { EditModelService } from '../service/edit-model.service';
 
 const editModelBodySchema = z.object({
   name: z.string(),
@@ -19,15 +19,11 @@ export class EditModelController {
   @HttpCode(204)
   async handle(
     @Body(bodyValidationPipe) body: EditModelBodySchema,
-    @Param("id") id: string,
+    @Param('id') id: string,
   ) {
-    const {
-      name,
-    } = body;
-
     await this.editModel.execute({
-      name,
       id,
+      name: body.name,
     });
   }
 }

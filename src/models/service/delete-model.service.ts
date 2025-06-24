@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { ModelsRepository } from "../../models.repository";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ModelsRepository } from '../repository/models.repository';
 
 interface DeleteModelServiceRequest {
   id: string;
@@ -9,15 +9,13 @@ interface DeleteModelServiceRequest {
 export class DeleteModelService {
   constructor(private modelsRepository: ModelsRepository) {}
 
-  async execute({
-    id,
-  }: DeleteModelServiceRequest): Promise<void> {
-    const product = await this.modelsRepository.findById(id);
+  async execute({ id }: DeleteModelServiceRequest): Promise<void> {
+    const model = await this.modelsRepository.findById(id);
 
-    if (!product) {
-      throw new Error("Model not found");
+    if (!model) {
+      throw new NotFoundException('Model não encontrado');
     }
 
-    await this.modelsRepository.delete(product);
+    await this.modelsRepository.delete(id);
   }
 }

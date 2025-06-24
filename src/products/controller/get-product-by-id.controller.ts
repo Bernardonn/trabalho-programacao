@@ -1,18 +1,18 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, NotFoundException } from "@nestjs/common";
 import { GetProductByIdService } from "../service/get-product-by-id.service";
 
-@Controller('/products/:id')
+@Controller('/products')
 export class GetProductByIdController {
   constructor(private getProductById: GetProductByIdService) {}
 
-  @Get()
-  async handle(@Param("id") id: string) {
-    const product = await this.getProductById.execute({
-      id,
-    });
+  @Get(':id')
+  async handle(@Param('id') id: string) {
+    const product = await this.getProductById.execute({ id });
 
-    return {
-      product
-    };
+    if (!product) {
+      throw new NotFoundException('Produto não encontrado.');
+    }
+
+    return { product };
   }
 }

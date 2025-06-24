@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { ModelsRepository } from "../../models.repository";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ModelsRepository } from '../repository/models.repository';
 
 export interface Model {
   id: string;
   name: string;
-  createdAt: string | Date | undefined;
-  updatedAt: string | Date | null | undefined;
+  createdAt: Date;
+  updatedAt: Date | null;
 }
 
 type FetchRecentModelsServiceResponse = {
@@ -19,23 +19,19 @@ export class FetchRecentModelsService {
   async execute(): Promise<FetchRecentModelsServiceResponse> {
     const models = await this.modelsRepository.findManyRecent();
 
-    const newModels: Model[] = [];
-
-    if (!models) {
-      throw new Error("Models not found");
+    if (models.length === 0) {
+      throw new NotFoundException('Models não encontrado');
     }
 
-    for (const model of models) {
-      newModels.push({
-        id: model.id?.toString() || "",
-        name: model.name,
-        createdAt: model.createdAt,
-        updatedAt: model.updatedAt,
-      });
-    }
+    const formattedModels = models.map(model => ({
+      id: model.id,
+      name: model.name,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
+    }));
 
     return {
-      models: newModels
+      models: formattedModels,
     };
   }
 }
